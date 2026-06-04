@@ -1,0 +1,57 @@
+import { registerSchema, loginSchema } from "../zodSchema/auth.zod.js"
+import jwt from "jsonwebtoken"
+import config from "../config/env.js"
+import { User } from "../modules/user/user.model.js"
+
+export const validateRegisterRequest = (req, res, next) => {
+    const result = registerSchema.safeParse(req.body)
+    if (!result.success) {
+        return res.status(400).json({
+            status: "fail",
+            errors: result.error.issues
+        })
+    }
+    req.body = result.data
+    next()
+}
+export const validateLoginRequest = (req, res, next) => {
+    const result = loginSchema.safeParse(req.body)
+    if (!result.success) {
+        return res.status(400).json({
+            status: "fail",
+            errors: result.error.issues
+        })
+    }
+    req.body = result.data
+    next()
+}
+
+export const validateUser = async (req, res, next) => {
+
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            return res.status(401).json({
+                status: "error",
+                message: "Unauthorized"
+            })
+        }
+
+        const token = authHeader.split(" ")[1]
+        const decoded = jwt.verify(token, config.JWT_ACCESS_SECRET_KEY)
+        if (decoded.type !== "access") {
+            return res.status(401).json({ status: "error", message: "Invalid token type" })
+        }
+        const userData = await User.findById(decoded.userId)
+
+        req.user = userData
+
+        next()
+    } catch (error) {
+        return res.status(401).json({
+            status: "error",
+            message: "Invalid credentials"
+        })
+    }
+
+}
