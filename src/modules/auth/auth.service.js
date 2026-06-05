@@ -1,9 +1,8 @@
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import crypto from "crypto"
-import { User } from "../user/user.model.js"
 import config from "../../config/env.js"
-import { Session } from "../auth/auth.model.js"
+import { User, Session } from "../auth/auth.model.js"
 import { ApiError } from "../../utils/ApiError.js"
 
 const hash = (token) => crypto.createHash("sha256").update(token).digest("hex")

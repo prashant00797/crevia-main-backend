@@ -1,23 +1,12 @@
 import { registerSchema, loginSchema } from "../zodSchema/auth.zod.js"
 import jwt from "jsonwebtoken"
 import config from "../config/env.js"
-import { User } from "../modules/user/user.model.js"
+import { User } from "../modules/auth/auth.model.js"
 
-export const validateRegisterRequest = (req, res, next) => {
+export const validateAuthRequest = (schema) => (req, res, next) => {
     const result = registerSchema.safeParse(req.body)
     if (!result.success) {
-        return res.status(400).json({
-            status: "fail",
-            errors: result.error.issues
-        })
-    }
-    req.body = result.data
-    next()
-}
-export const validateLoginRequest = (req, res, next) => {
-    const result = loginSchema.safeParse(req.body)
-    if (!result.success) {
-        return res.status(400).json({
+        return res.status(400).json({ //todo-think whether to use global error
             status: "fail",
             errors: result.error.issues
         })
@@ -43,6 +32,10 @@ export const validateUser = async (req, res, next) => {
             return res.status(401).json({ status: "error", message: "Invalid token type" })
         }
         const userData = await User.findById(decoded.userId)
+
+        if (!userData) {
+            return res.status(404).json({ status: "error", message: "No user found" })
+        }
 
         req.user = userData
 
