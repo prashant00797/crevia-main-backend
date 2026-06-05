@@ -19,7 +19,13 @@ export const getAllContentService = async (user) => {
 
     const contentList = await Content.find({ createdBy: user._id })
 
-    return contentList
+
+    return {
+        ideas: contentList.filter((list) => list.stage === "ideas"),
+        writing: contentList.filter((list) => list.stage === "writing"),
+        editing: contentList.filter((list) => list.stage === "editing"),
+        published: contentList.filter((list) => list.stage === "published")
+    }
 
 }
 
@@ -53,4 +59,21 @@ export const deleteContentService = async (contentId, user) => {
         throw new ApiError(404, "No content found")
     }
 
+}
+
+export const getContentStatsService = async (user) => {
+    const statsList = await Content.aggregate([
+        { $match: { createdBy: user._id } },
+        { $group: { _id: "$stage", count: { $sum: 1 } } }
+    ]
+    )
+    return statsList
+
+}
+
+export const getContentDeadlineService = async (user) => {
+
+    const deadlineList = await Content.find({ createdBy: user._id, stage: { $ne: "published" }, dueDate: { $gte: new Date } }).sort({ dueDate: 1 }).limit(3).select("title platform dueDate")
+
+    return deadlineList
 }

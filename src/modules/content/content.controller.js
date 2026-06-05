@@ -1,5 +1,7 @@
 import { ApiError } from "../../utils/ApiError.js"
 import * as contentService from "./content.service.js"
+
+
 export const createContent = async (req, res) => {
     const contentData = await contentService.createContentService(req.body, req.user)
     res.status(201).json({
@@ -36,4 +38,26 @@ export const deleteContent = async (req, res) => {
 
     await contentService.deleteContentService(contentId, req.user)
     res.status(204).end()
+}
+
+export const contentStats = async (req, res) => {
+    const stats = await contentService.getContentStatsService(req.user)
+    return res.status(200).json({
+        status: "success",
+        data: stats
+    })
+}
+
+export const contentDeadline = async (req, res) => {
+    const contentDeadlineList = await contentService.getContentDeadlineService(req.user)
+    if (contentDeadlineList.length === 0) {
+        return res.status(200).json({
+            status: "success",
+            message: "No Deadline. You are all set"
+        })
+    }
+    res.status(200).json({
+        status: "success",
+        data: contentDeadlineList
+    })
 }
