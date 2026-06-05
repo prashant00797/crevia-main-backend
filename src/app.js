@@ -2,7 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import authRouter from "./modules/auth/auth.router.js";
-import userRouter from "./modules/profile/profile.router.js";
+import profileRouter from "./modules/profile/profile.router.js";
 import contentRouter from "./modules/content/content.router.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 
@@ -15,7 +15,7 @@ app.use(cookieParser());
 
 //routes
 app.use("/api/v1/auth", authRouter)
-app.use("/api/v1/user", userRouter)
+app.use("/api/v1/user", profileRouter)
 app.use("/api/v1/content", contentRouter)
 
 //health check

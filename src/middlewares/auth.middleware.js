@@ -4,7 +4,7 @@ import config from "../config/env.js"
 import { User } from "../modules/auth/auth.model.js"
 
 export const validateAuthRequest = (schema) => (req, res, next) => {
-    const result = registerSchema.safeParse(req.body)
+    const result = schema.safeParse(req.body)
     if (!result.success) {
         return res.status(400).json({ //todo-think whether to use global error
             status: "fail",
