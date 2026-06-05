@@ -4,6 +4,7 @@ import crypto from "crypto"
 import { User } from "../user/user.model.js"
 import config from "../../config/env.js"
 import { Session } from "../auth/auth.model.js"
+import { ApiError } from "../../utils/ApiError.js"
 
 const hash = (token) => crypto.createHash("sha256").update(token).digest("hex")
 
@@ -19,7 +20,7 @@ export const registerService = async (req) => {
         }
     )
     if (isUserExist) {
-        throw new Error("User already exists")
+        throw new ApiError(409, "User already exists")
     }
 
     const passwordHash = await bcrypt.hash(password, 10)
@@ -64,12 +65,12 @@ export const loginService = async (req) => {
 
 
     if (!user) {
-        throw new Error("Invalid Credentials")
+        throw new ApiError(401, "Invalid Credentials")
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password)
     if (!isPasswordValid) {
-        throw new Error("Invalid Credentials")
+        throw new ApiError(401, "Invalid Credentials")
     }
 
     const refreshToken = jwt.sign({ userId: user._id, type: "refresh" }, config.JWT_REFRESH_SECRET_KEY, { expiresIn: "7d" })
@@ -95,7 +96,7 @@ export const refreshTokenService = async (refreshToken) => {
     const decoded = jwt.verify(refreshToken, config.JWT_REFRESH_SECRET_KEY)
 
     if (decoded.type !== "refresh") {
-        throw new Error("Invalid token type")
+        throw new ApiError(401, "Unauthorized")
     }
 
     const session = await Session.findOne({
@@ -104,7 +105,7 @@ export const refreshTokenService = async (refreshToken) => {
     })
 
     if (!session) {
-        throw new Error("Session Invalid")
+        throw new ApiError(401, "Unauthorized")
     }
 
     const accessToken = jwt.sign({ userId: decoded.userId, type: "access", sessionId: session._id }, config.JWT_ACCESS_SECRET_KEY, { expiresIn: "10m" })
@@ -119,7 +120,7 @@ export const logoutUserService = async (refreshToken) => {
     })
 
     if (!session) {
-        throw new Error("Session Invalid")
+        throw new ApiError(401, "Unauthorized")
     }
     session.revoked = true
     await session.save()

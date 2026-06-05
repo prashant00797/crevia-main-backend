@@ -3,6 +3,7 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import authRouter from "./modules/auth/index.js";
 import userRouter from "./modules/user/index.js";
+import { errorHandler } from "./middlewares/error.middleware.js";
 
 const app = express();
 
@@ -15,8 +16,6 @@ app.use(cookieParser());
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/user", userRouter)
 
-
-
 //health check
 app
   .get("/health", (req, res) => {
@@ -25,5 +24,8 @@ app
   .head("/health", (req, res) => {
     res.status(200).end();
   });
+
+//error handler
+app.use(errorHandler)
 
 export default app;
