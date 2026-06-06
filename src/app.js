@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import authRouter from "./modules/auth/auth.router.js";
 import profileRouter from "./modules/profile/profile.router.js";
 import contentRouter from "./modules/content/content.router.js";
+import generateRouter from "./modules/generation/generation.router.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 
 const app = express();
@@ -17,6 +18,7 @@ app.use(cookieParser());
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/user", profileRouter)
 app.use("/api/v1/content", contentRouter)
+app.use("/api/v1/ai", generateRouter)
 
 //health check
 app

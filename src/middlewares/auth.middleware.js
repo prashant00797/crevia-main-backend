@@ -3,18 +3,6 @@ import jwt from "jsonwebtoken"
 import config from "../config/env.js"
 import { User } from "../modules/auth/auth.model.js"
 
-export const validateAuthRequest = (schema) => (req, res, next) => {
-    const result = schema.safeParse(req.body)
-    if (!result.success) {
-        return res.status(400).json({ //todo-think whether to use global error
-            status: "fail",
-            errors: result.error.issues
-        })
-    }
-    req.body = result.data
-    next()
-}
-
 export const validateUser = async (req, res, next) => {
 
     try {

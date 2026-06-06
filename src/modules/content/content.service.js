@@ -3,11 +3,11 @@ import { Content } from "./content.model.js"
 
 export const createContentService = async (requestBody, user) => {
 
-
     const newContentData = new Content({
         ...requestBody,
         createdBy: user._id
     })
+
     await newContentData.save()
 
     return newContentData
@@ -16,9 +16,7 @@ export const createContentService = async (requestBody, user) => {
 
 export const getAllContentService = async (user) => {
 
-
     const contentList = await Content.find({ createdBy: user._id })
-
 
     return {
         ideas: contentList.filter((list) => list.stage === "ideas"),
@@ -30,7 +28,6 @@ export const getAllContentService = async (user) => {
 }
 
 export const updateContentService = async (contentId, requestBody, user) => {
-
 
     const updatedContent = await Content.findOneAndUpdate(
         {
@@ -49,6 +46,7 @@ export const updateContentService = async (contentId, requestBody, user) => {
 }
 
 export const deleteContentService = async (contentId, user) => {
+
     const deletedContent = await Content.findOneAndDelete(
         {
             _id: contentId, createdBy: user._id
@@ -62,11 +60,13 @@ export const deleteContentService = async (contentId, user) => {
 }
 
 export const getContentStatsService = async (user) => {
+
     const statsList = await Content.aggregate([
         { $match: { createdBy: user._id } },
         { $group: { _id: "$stage", count: { $sum: 1 } } }
     ]
     )
+
     return statsList
 
 }

@@ -2,6 +2,7 @@ import bcrypt from "bcrypt"
 import { ApiError } from "../../utils/ApiError.js"
 import { User } from "../auth/auth.model.js"
 export const updateProfilePasswordService = async (request, user) => {
+
     const currentPasswordInDB = user.password
     const currentPasswordInRequest = request.currentPassword
     const isPasswordValid = await bcrypt.compare(currentPasswordInRequest, currentPasswordInDB)

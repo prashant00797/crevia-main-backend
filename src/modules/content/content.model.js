@@ -21,7 +21,6 @@ const contentSchema = new mongoose.Schema({
         type: String,
         required: true,
         enum: ["youtube", "instagram", "x", "linkedin", "blog", "other"],
-        default: "other"
 
     },
     dueDate: {
@@ -35,7 +34,6 @@ const contentSchema = new mongoose.Schema({
     stage: {
         type: String,
         enum: ["ideas", "writing", "editing", "published"],
-        default: "ideas"
     }
 }, {
     timestamps: true

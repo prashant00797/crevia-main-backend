@@ -53,8 +53,8 @@ export const registerService = async (req) => {
 
 }
 export const loginService = async (req) => {
-    const { username, email, password } = req.body
 
+    const { username, email, password } = req.body
 
     const conditions = []
     if (username) conditions.push({ username })

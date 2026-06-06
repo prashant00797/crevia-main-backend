@@ -52,7 +52,6 @@ export const loginUser = async (req, res) => {
 
 export const refreshToken = async (req, res) => {
 
-
     const refreshToken = req.cookies.token
     if (!refreshToken) {
         throw new ApiError(401, "Unauthorized")
@@ -64,8 +63,6 @@ export const refreshToken = async (req, res) => {
             accessToken
         }
     })
-
-
 }
 
 
@@ -73,11 +70,15 @@ export const refreshToken = async (req, res) => {
 export const logoutUser = async (req, res) => {
 
     const refreshToken = req.cookies.token;
+
     if (!refreshToken) {
         throw new ApiError(401, "Unauthorized")
     }
+
     await authService.logoutUserService(refreshToken)
+
     res.clearCookie("token")
+
     return res.status(200).json({
         status: "success",
         message: "Logged Out"
