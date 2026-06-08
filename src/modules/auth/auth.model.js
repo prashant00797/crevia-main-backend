@@ -2,6 +2,13 @@ import mongoose from "mongoose";
 import validator from "validator"
 
 const userSchema = new mongoose.Schema({
+    "fullname": {
+        type: String,
+        required: true,
+        trim: true,
+        minLength: 5,
+        maxLength: 50,
+    },
     "username": {
         type: String,
         required: true,

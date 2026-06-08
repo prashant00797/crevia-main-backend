@@ -1,7 +1,11 @@
 import { z } from "zod"
 
 export const registerSchema = z.object({
-    username: z.string().min(5).max(20).trim(),
+    fullname: z.string().min(5).max(50).trim().refine(
+        (name) => name.split(/\s+/).length >= 2,
+        "Please enter first and last name"
+    ),
+    username: z.string().min(5).max(20).trim().regex(/^\S+$/, "Username cannot contain spaces"),
     email: z.string().email().trim().lowercase(),
     password: z.string().trim().min(8)
         .regex(/[a-z]/, "Must contain a lowercase letter")

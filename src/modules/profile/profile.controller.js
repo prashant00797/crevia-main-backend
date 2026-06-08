@@ -3,11 +3,11 @@ import * as profileService from "./profile.service.js"
 
 export const getUserProfile = (req, res) => {
 
-    const { _id, username, email } = req.user
+    const { _id, fullname, username, email } = req.user
 
     res.status(200).json({
         status: "success",
-        data: { userId: _id, userName: username, email }
+        data: { userId: _id, fullname, username, email }
     })
 }
 

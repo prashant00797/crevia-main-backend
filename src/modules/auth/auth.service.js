@@ -8,7 +8,7 @@ import { ApiError } from "../../utils/ApiError.js"
 const hash = (token) => crypto.createHash("sha256").update(token).digest("hex")
 
 export const registerService = async (req) => {
-    const { username, email, password } = req.body
+    const { fullname, username, email, password } = req.body
 
     const isUserExist = await User.findOne(
         {
@@ -25,6 +25,7 @@ export const registerService = async (req) => {
     const passwordHash = await bcrypt.hash(password, 10)
 
     const user = new User({
+        fullname,
         username,
         email,
         password: passwordHash
