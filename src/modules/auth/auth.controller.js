@@ -17,7 +17,7 @@ export const registerUser = async (req, res) => {
         {
             userId: registeredUserData.user._id,
             fullname: registeredUserData.user.fullname,
-            userName: registeredUserData.user.username,
+            username: registeredUserData.user.username,
             email: registeredUserData.user.email,
             accessToken: registeredUserData.accessToken
         }
@@ -42,7 +42,7 @@ export const loginUser = async (req, res) => {
         {
             userId: loggedInUserData.user._id,
             fullname: loggedInUserData.user.fullname,
-            userName: loggedInUserData.user.username,
+            username: loggedInUserData.user.username,
             email: loggedInUserData.user.email,
             accessToken: loggedInUserData.accessToken
         }

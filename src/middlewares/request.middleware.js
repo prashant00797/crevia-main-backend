@@ -4,8 +4,8 @@ export const validateRequest = (schema) => (req, res, next) => {
         const unknownKey = result.error.issues.find((key) => key.code == "unrecognized_keys")
         const error = unknownKey ? unknownKey.message : result.error.issues[0].message
         return res.status(400).json({
-            status: "fail",
-            errors: `Bad Request - ${error}`
+            status: "error",
+            message: `Bad Request - ${error}`
         })
     }
     req.body = result.data

@@ -6,19 +6,19 @@ const TONE = ["Professional", "Casual", "Friendly", "Educational", "Storytelling
 
 export const captionRequestSchema = z.object({
     tool: z.enum(TOOL),
-    prompt: z.string(),
+    prompt: z.string().trim().min(20),
     platform: z.enum(PLATFORM),
     tone: z.enum(TONE)
 }).strict()
 
 export const ideaRequestSchema = z.object({
     tool: z.enum(TOOL),
-    prompt: z.string(),
+    prompt: z.string().trim().min(20),
 }).strict()
 
 export const sponsorEmailRequestSchema = z.object({
     tool: z.enum(TOOL),
-    prompt: z.string(),
+    prompt: z.string().trim().min(20),
     sponsorName: z.string(),
     productService: z.string(),
     tone: z.enum(TONE)

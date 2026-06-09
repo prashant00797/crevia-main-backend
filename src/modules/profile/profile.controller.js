@@ -15,7 +15,9 @@ export const updateProfilePassword = async (req, res) => {
 
     await profileService.updateProfilePasswordService(req.body, req.user)
 
-    res.status(200).json({
+    res.clearCookie("token")
+
+    return res.status(200).json({
         status: "success",
         message: "Password Updated"
     })

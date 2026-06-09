@@ -11,7 +11,7 @@ export const errorHandler = (err, req, res, next) => {
     //to handle error for invalid path variables
     if (err.name === "CastError") {
         return res.status(400).json({
-            status: "fail",
+            status: "error",
             message: "Bad Request"
         })
     }

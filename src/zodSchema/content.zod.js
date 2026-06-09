@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const createContentRequestSchema = z.object({
-    title: z.string().max(100),
+    title: z.string().trim().min(1).max(100),
     description: z.string().min(20).max(250),
     platform: z.enum(["youtube", "instagram", "x", "linkedin", "blog", "other"]).default("other"),
     dueDate: z.coerce.date().refine(

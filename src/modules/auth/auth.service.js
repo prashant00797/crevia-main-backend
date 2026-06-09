@@ -93,17 +93,28 @@ export const loginService = async (req) => {
 }
 
 export const refreshTokenService = async (refreshToken) => {
-    const decoded = jwt.verify(refreshToken, config.JWT_REFRESH_SECRET_KEY)
 
+    let decoded;
+    // Convert invalid or expired refresh-token errors into a 401 response
+    try {
+        decoded = jwt.verify(refreshToken, config.JWT_REFRESH_SECRET_KEY)
+
+    }catch {
+        throw new ApiError(401, "Unauthorized")
+    }
+
+    // Check if the token is a refresh token
     if (decoded.type !== "refresh") {
         throw new ApiError(401, "Unauthorized")
     }
 
+    // Check if the session is valid
     const session = await Session.findOne({
         refreshTokenHash: hash(refreshToken),
         revoked: false
     })
 
+    // Check if the session is not revoked
     if (!session) {
         throw new ApiError(401, "Unauthorized")
     }

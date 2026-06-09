@@ -22,7 +22,7 @@ if (!process.env.GEMINI_API_KEY) {
   throw new Error("GEMINI_API_KEY is not defined in environment variables");
 }
 if (!process.env.GROQ_API_KEY) {
-  throw new Error("GEMINI_API_KEY is not defined in environment variables");
+  throw new Error("GROQ_API_KEY is not defined in environment variables");
 }
 const config = {
   PORT: process.env.PORT,

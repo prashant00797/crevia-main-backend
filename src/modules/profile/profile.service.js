@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt"
 import { ApiError } from "../../utils/ApiError.js"
-import { User } from "../auth/auth.model.js"
+import { Session, User } from "../auth/auth.model.js"
+
 export const updateProfilePasswordService = async (request, user) => {
 
     const currentPasswordInDB = user.password
@@ -13,8 +14,10 @@ export const updateProfilePasswordService = async (request, user) => {
 
     const newPasswordHash = await bcrypt.hash(request.newPassword, 10)
 
-    const updatedUserData = await User.findByIdAndUpdate(user._id, { password: newPasswordHash })
+    await User.findByIdAndUpdate(user._id, { password: newPasswordHash })
 
-    return updatedUserData
-
+    await Session.updateMany(
+        { userId: user._id, revoked: false },
+        { revoked: true }
+    )
 }

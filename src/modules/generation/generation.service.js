@@ -73,11 +73,23 @@ export const sponsorshipService = async (request, user) => {
 }
 
 export const historyService = async (user, query) => {
-    const page = parseInt(query.page) || 1;
-    const LIMIT = 2
-    const skip = (page - 1) * LIMIT
+    const page = parseInt(query.page) || 1
+    const limit = parseInt(query.limit) || 10
+    const skip = (page - 1) * limit
 
-    const contentList = await AIGeneration.find({ createdBy: user._id }).skip(skip).limit(LIMIT)
+    const contentList = await AIGeneration.find({ createdBy: user._id }).skip(skip).limit(limit).sort({ createdAt: -1 })
+    const totalItems = await AIGeneration.countDocuments({ createdBy: user._id })
+    const totalPages = Math.ceil(totalItems / limit)
 
-    return contentList
+    return {
+        contentList,
+        pagination: {
+            page,
+            limit,
+            count: contentList.length,
+            totalItems,
+            totalPages,
+            hasNextPage: page * limit < totalItems
+        }
+    }
 }
