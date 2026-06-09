@@ -1,4 +1,3 @@
-import aiResponse from "../../utils/openAi.js"
 import * as generationService from "./generation.service.js"
 export const caption = async (req, res) => {
 

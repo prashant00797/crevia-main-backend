@@ -24,17 +24,17 @@ export const sponsorEmailRequestSchema = z.object({
     tone: z.enum(TONE)
 }).strict()
 
-
+// TODO -> Right the exact error response
 export const captionsResponseSchema = z.object({
     captions: z.array(z.string())
-}).strict()
+}).strict().refine(d => d.captions.length > 0, "captions must not be empty")
 
 export const ideaResponseSchema = z.object({
     ideas: z.array(z.string())
-}).strict()
+}).strict().refine(d => d.ideas.length > 0, "ideas must not be empty")
 
 export const sponsorResponseEmailSchema = z.object({
     subject: z.string(),
     body: z.string()
-}).strict()
+}).strict().refine(d => d.subject.length > 0 && d.body.length > 0, "subject and body must not be empty")
 

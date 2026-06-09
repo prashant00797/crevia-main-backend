@@ -36,7 +36,7 @@ export const loginUser = async (req, res) => {
         sameSite: "strict",
         maxAge: 7 * 24 * 60 * 60 * 1000
     })
-    return res.status(201).json({
+    return res.status(200).json({
         status: "success",
         data:
         {
@@ -59,7 +59,7 @@ export const refreshToken = async (req, res) => {
         throw new ApiError(401, "Unauthorized")
     }
     const accessToken = await authService.refreshTokenService(refreshToken)
-    return res.status(201).json({
+    return res.status(200).json({
         status: "success",
         data: {
             accessToken

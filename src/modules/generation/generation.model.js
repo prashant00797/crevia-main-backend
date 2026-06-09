@@ -33,6 +33,9 @@ const generateContentSchema = new mongoose.Schema({
     result: {
         type: String
     },
+    provider: {
+        type: String
+    }
 },
     {
         timestamps: true

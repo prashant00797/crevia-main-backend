@@ -1,7 +1,10 @@
-import { registerSchema, loginSchema } from "../zodSchema/auth.zod.js"
 import jwt from "jsonwebtoken"
+import rateLimit from "express-rate-limit"
+import slowDown from "express-slow-down"
 import config from "../config/env.js"
 import { User } from "../modules/auth/auth.model.js"
+import { registerSchema, loginSchema } from "../zodSchema/auth.zod.js"
+
 
 export const validateUser = async (req, res, next) => {
 

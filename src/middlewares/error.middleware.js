@@ -16,7 +16,7 @@ export const errorHandler = (err, req, res, next) => {
         })
     }
 
-
+    if (!(err instanceof ApiError)) console.error(err) // to check error message
     // finally
     return res.status(500).json({
         status: "error",

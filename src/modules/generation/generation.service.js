@@ -1,27 +1,23 @@
-import aiResponse from "../../utils/openAi.js"
 import * as aiResponseSchema from "../../zodSchema/generation.zod.js"
 import * as syspmt from "../../utils/prompts.js"
-import { APIError } from "openai"
 import { AIGeneration } from "./generation.model.js"
+import llmGateway from "../../gateways/llmGateWay.js"
 
 export const captionService = async (request, user) => {
 
     const { tool, prompt, platform, tone } = request
     const userInput = `Topic: ${prompt} Platform: ${platform} Tone: ${tone}`
 
-    const response = await aiResponse(aiResponseSchema.captionsResponseSchema, syspmt.captionGenerationSysPmt, userInput)
-
-    if (!response?.captions?.length) {
-        throw new APIError("Our model is facing issues, please try again later")
-    }
+    const { data, provider } = await llmGateway(aiResponseSchema.captionsResponseSchema, syspmt.captionGenerationSysPmt, userInput)
 
     const content = await new AIGeneration({
         tool: tool,
         prompt,
         platform,
         tone,
-        result: JSON.stringify(response),
-        createdBy: user._id
+        result: JSON.stringify(data),
+        createdBy: user._id,
+        provider
     })
 
     await content.save()
@@ -35,17 +31,14 @@ export const ideaService = async (request, user) => {
     const { tool, prompt } = request
     const userInput = `Niche / Topic: ${prompt}`
 
-    const response = await aiResponse(aiResponseSchema.ideaResponseSchema, syspmt.contentIdeaGenerationSysPmt, userInput)
-
-    if (!response?.ideas?.length) {
-        throw new APIError("Our model is facing issues, please try again later")
-    }
+    const { data, provider } = await llmGateway(aiResponseSchema.ideaResponseSchema, syspmt.contentIdeaGenerationSysPmt, userInput)
 
     const content = await new AIGeneration({
         tool: tool,
         prompt,
-        result: JSON.stringify(response),
-        createdBy: user._id
+        result: JSON.stringify(data),
+        createdBy: user._id,
+        provider
     })
 
     await content.save()
@@ -61,12 +54,7 @@ export const sponsorshipService = async (request, user) => {
     My Niche: ${prompt}
     Tone: ${tone}`
 
-    const response = await aiResponse(aiResponseSchema.sponsorResponseEmailSchema, syspmt.sponsorEmailGenerationSysPmt, userInput)
-    console.log(response);
-
-    if (!response?.subject?.length || !response?.body?.length) {
-        throw new APIError("Our model is facing issues, please try again later")
-    }
+    const { data, provider } = await llmGateway(aiResponseSchema.sponsorResponseEmailSchema, syspmt.sponsorEmailGenerationSysPmt, userInput)
 
     const content = await new AIGeneration({
         tool: tool,
@@ -74,8 +62,9 @@ export const sponsorshipService = async (request, user) => {
         productService,
         prompt,
         tone,
-        result: JSON.stringify(response),
-        createdBy: user._id
+        result: JSON.stringify(data),
+        createdBy: user._id,
+        provider
     })
 
     await content.save()
