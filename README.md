@@ -10,7 +10,7 @@ The backend service for Crevia (Creator OS), built with Node.js, Express, and Mo
 - **MongoDB** via **Mongoose**
 - **JWT** for authentication
 - **Zod** for request validation
-- **OpenAI** for AI content generation
+- **Multiple AI providers** via an **LLM gateway** for content generation
 
 ## Project Structure
 
@@ -19,7 +19,7 @@ src/
 ├── config/        # Environment and database setup
 ├── middlewares/   # Auth, error handling, request middleware
 ├── modules/       # Feature modules (auth, profile, content, generation)
-├── utils/         # Helpers (OpenAI client, prompts, API errors)
+├── utils/         # Helpers (prompts, API errors)
 └── zodSchema/     # Request validation schemas
 ```
 
