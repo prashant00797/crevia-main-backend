@@ -10,7 +10,7 @@ export const captionService = async (request, user) => {
 
     const { data, provider } = await llmGateway(aiResponseSchema.captionsResponseSchema, syspmt.captionGenerationSysPmt, userInput)
 
-    const content = await new AIGeneration({
+    const content = new AIGeneration({
         tool: tool,
         prompt,
         platform,
@@ -33,7 +33,7 @@ export const ideaService = async (request, user) => {
 
     const { data, provider } = await llmGateway(aiResponseSchema.ideaResponseSchema, syspmt.contentIdeaGenerationSysPmt, userInput)
 
-    const content = await new AIGeneration({
+    const content = new AIGeneration({
         tool: tool,
         prompt,
         result: JSON.stringify(data),
@@ -56,7 +56,7 @@ export const sponsorshipService = async (request, user) => {
 
     const { data, provider } = await llmGateway(aiResponseSchema.sponsorResponseEmailSchema, syspmt.sponsorEmailGenerationSysPmt, userInput)
 
-    const content = await new AIGeneration({
+    const content = new AIGeneration({
         tool: tool,
         sponsorName,
         productService,

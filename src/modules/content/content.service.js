@@ -73,7 +73,7 @@ export const getContentStatsService = async (user) => {
 
 export const getContentDeadlineService = async (user) => {
 
-    const deadlineList = await Content.find({ createdBy: user._id, stage: { $ne: "published" }, dueDate: { $gte: new Date } }).sort({ dueDate: 1 }).limit(3).select("title platform dueDate")
+    const deadlineList = await Content.find({ createdBy: user._id, stage: { $ne: "published" }, dueDate: { $gte: new Date() } }).sort({ dueDate: 1 }).limit(3).select("title platform dueDate")
 
     return deadlineList
 }
